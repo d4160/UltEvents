@@ -1,26 +1,20 @@
-﻿// UltEvents // Copyright 2020 Kybernetik //
+﻿// UltEvents // Copyright 2019 Kybernetik //
 
 using UnityEngine;
 
 namespace UltEvents
 {
-    /// <summary>
-    /// An event that takes a single <see cref="Collider2D"/> parameter.
-    /// </summary>
-    [System.Serializable]
-    public sealed class TriggerEvent2D : UltEvent<Collider2D> { }
-
     /************************************************************************************************************************/
 
     /// <summary>
     /// Holds <see cref="UltEvent"/>s which are called by various <see cref="MonoBehaviour"/> 2D trigger events:
     /// <see cref="OnTriggerEnter2D"/>, <see cref="OnTriggerStay2D"/>, and <see cref="OnTriggerExit2D"/>.
     /// </summary>
-    [AddComponentMenu(UltEventUtils.ComponentMenuPrefix + "Trigger Events 2D")]
+    [AddComponentMenu(UltEventUtils.ComponentMenuPrefix + "Trigger EnterExit Events 2D")]
     [HelpURL(UltEventUtils.APIDocumentationURL + "/TriggerEvents2D")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Collider2D))]
-    public class TriggerEvents2D : MonoBehaviour
+    public class TriggerEnterExitEvents2D : MonoBehaviour
     {
         /************************************************************************************************************************/
 
@@ -44,30 +38,6 @@ namespace UltEvents
         {
             if (_TriggerEnterEvent != null)
                 _TriggerEnterEvent.Invoke(collider);
-        }
-
-        /************************************************************************************************************************/
-
-        [SerializeField]
-        private TriggerEvent2D _TriggerStayEvent;
-
-        /// <summary>Invoked by <see cref="OnTriggerStay2D"/>.</summary>
-        public TriggerEvent2D TriggerStayEvent
-        {
-            get
-            {
-                if (_TriggerStayEvent == null)
-                    _TriggerStayEvent = new TriggerEvent2D();
-                return _TriggerStayEvent;
-            }
-            set { _TriggerStayEvent = value; }
-        }
-
-        /// <summary>Invokes <see cref="TriggerStayEvent"/>.</summary>
-        public virtual void OnTriggerStay2D(Collider2D collider)
-        {
-            if (_TriggerStayEvent != null)
-                _TriggerStayEvent.Invoke(collider);
         }
 
         /************************************************************************************************************************/

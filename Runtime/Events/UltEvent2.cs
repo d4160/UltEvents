@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -34,6 +34,10 @@ namespace UltEvents
     {
         /************************************************************************************************************************/
         #region Fields and Properties
+        /************************************************************************************************************************/
+
+        public override int ParameterCount { get { return 2; } }
+
         /************************************************************************************************************************/
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Ensures that 'e' isn't null and adds 'method' to its <see cref="PersistentCalls"/> (if in Edit Mode) or
+        /// Ensures that `e` isn't null and adds `method` to its <see cref="PersistentCalls"/> (if in Edit Mode) or
         /// <see cref="DynamicCalls"/> (in Play Mode and at runtime).
         /// </summary>
         public static UltEvent<T0, T1> operator +(UltEvent<T0, T1> e, Action<T0, T1> method)
@@ -113,7 +117,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// If 'e' isn't null, this method removes 'method' from its <see cref="PersistentCalls"/> (if in Edit Mode) or
+        /// If `e` isn't null, this method removes `method` from its <see cref="PersistentCalls"/> (if in Edit Mode) or
         /// <see cref="DynamicCalls"/> (in Play Mode and at runtime).
         /// </summary>
         public static UltEvent<T0, T1> operator -(UltEvent<T0, T1> e, Action<T0, T1> method)
@@ -136,7 +140,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Creates a new <see cref="UltEventBase"/> and adds 'method' to its <see cref="PersistentCalls"/> (if in edit
+        /// Creates a new <see cref="UltEventBase"/> and adds `method` to its <see cref="PersistentCalls"/> (if in edit
         /// mode), or <see cref="DynamicCalls"/> (in Play Mode and at runtime).
         /// </summary>
         public static implicit operator UltEvent<T0, T1>(Action<T0, T1> method)
@@ -152,7 +156,7 @@ namespace UltEvents
 
         /************************************************************************************************************************/
 
-        /// <summary>Ensures that 'e' isn't null and adds 'method' to its <see cref="DynamicCalls"/>.</summary>
+        /// <summary>Ensures that `e` isn't null and adds `method` to its <see cref="DynamicCalls"/>.</summary>
         public static void AddDynamicCall(ref UltEvent<T0, T1> e, Action<T0, T1> method)
         {
             if (e == null)
@@ -161,7 +165,7 @@ namespace UltEvents
             e.DynamicCalls += method;
         }
 
-        /// <summary>If 'e' isn't null, this method removes 'method' from its <see cref="DynamicCalls"/>.</summary>
+        /// <summary>If `e` isn't null, this method removes `method` from its <see cref="DynamicCalls"/>.</summary>
         public static void RemoveDynamicCall(ref UltEvent<T0, T1> e, Action<T0, T1> method)
         {
             if (e != null)

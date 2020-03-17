@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 using System;
 using System.Collections;
@@ -18,7 +18,7 @@ namespace UltEvents
         public const string ComponentMenuPrefix = "UltEvents/";
 
         /// <summary>The address of the online documentation.</summary>
-        public const string DocumentationURL = "https://kybernetikgames.github.io/ultevents";
+        public const string DocumentationURL = "https://kybernetik.com.au/ultevents";
 
         /// <summary>The address of the API documentation.</summary>
         public const string APIDocumentationURL = DocumentationURL + "/api/UltEvents";
@@ -123,12 +123,12 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns the name of a 'type' as it would appear in C# code.
+        /// Returns the name of a `type` as it would appear in C# code.
         /// <para></para>
         /// For example, typeof(List&lt;float&gt;).FullName would give you:
         /// System.Collections.Generic.List`1[[System.Single, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
         /// <para></para>
-        /// This method would instead return System.Collections.Generic.List&lt;float&gt; if 'fullName' is true, or
+        /// This method would instead return System.Collections.Generic.List&lt;float&gt; if `fullName` is true, or
         /// just List&lt;float&gt; if it is false.
         /// <para></para>
         /// Note that all returned values are stored in a dictionary to speed up repeated use.
@@ -230,7 +230,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Appends the generic arguments of 'type' (after skipping the specified number).
+        /// Appends the generic arguments of `type` (after skipping the specified number).
         /// </summary>
         public static int AppendNameAndGenericArguments(StringBuilder text, Type type, bool fullName = true, int skipGenericArguments = 0)
         {
@@ -286,11 +286,11 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns the full name of a 'member' as it would appear in C# code.
+        /// Returns the full name of a `member` as it would appear in C# code.
         /// <para></para>
         /// For example, passing this method info in as its own parameter would return "<see cref="UltEventUtils"/>.GetNameCS".
         /// <para></para>
-        /// Note that when 'member' is a <see cref="Type"/>, this method calls <see cref="GetNameCS(Type, bool)"/> instead.
+        /// Note that when `member` is a <see cref="Type"/>, this method calls <see cref="GetNameCS(Type, bool)"/> instead.
         /// </summary>
         public static string GetNameCS(this MemberInfo member, bool fullName = true)
         {
@@ -317,11 +317,11 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Appends the full name of a 'member' as it would appear in C# code.
+        /// Appends the full name of a `member` as it would appear in C# code.
         /// <para></para>
         /// For example, passing this method info in as its own parameter would append "<see cref="UltEventUtils"/>.AppendName".
         /// <para></para>
-        /// Note that when 'member' is a <see cref="Type"/>, this method calls <see cref="GetNameCS(Type, bool)"/> instead.
+        /// Note that when `member` is a <see cref="Type"/>, this method calls <see cref="GetNameCS(Type, bool)"/> instead.
         /// </summary>
         public static StringBuilder AppendNameCS(this StringBuilder text, MemberInfo member, bool fullName = true)
         {
@@ -355,7 +355,7 @@ namespace UltEvents
         #region Deep to String
         /************************************************************************************************************************/
 
-        /// <summary>Returns a string containing the value of each element in 'collection'.</summary>
+        /// <summary>Returns a string containing the value of each element in `collection`.</summary>
         public static string DeepToString(this IEnumerable collection, string separator)
         {
             if (collection == null)
@@ -364,7 +364,7 @@ namespace UltEvents
                 return collection.GetEnumerator().DeepToString(separator);
         }
 
-        /// <summary>Returns a string containing the value of each element in 'collection' (each on a new line).</summary>
+        /// <summary>Returns a string containing the value of each element in `collection` (each on a new line).</summary>
         public static string DeepToString(this IEnumerable collection)
         {
             return collection.DeepToString(Environment.NewLine);
@@ -372,7 +372,7 @@ namespace UltEvents
 
         /************************************************************************************************************************/
 
-        /// <summary>Each element returned by 'enumerator' is appended to 'text'.</summary>
+        /// <summary>Each element returned by `enumerator` is appended to `text`.</summary>
         public static void AppendDeepToString(StringBuilder text, IEnumerator enumerator, string separator)
         {
             text.Append("[]");
@@ -396,7 +396,7 @@ namespace UltEvents
             text.Insert(countIndex, count);
         }
 
-        /// <summary>Returns a string containing the value of each element in 'enumerator'.</summary>
+        /// <summary>Returns a string containing the value of each element in `enumerator`.</summary>
         public static string DeepToString(this IEnumerator enumerator, string separator)
         {
             var text = new StringBuilder();
@@ -404,7 +404,7 @@ namespace UltEvents
             return text.ToString();
         }
 
-        /// <summary>Returns a string containing the value of each element in 'enumerator' (each on a new line).</summary>
+        /// <summary>Returns a string containing the value of each element in `enumerator` (each on a new line).</summary>
         public static string DeepToString(this IEnumerator enumerator)
         {
             return enumerator.DeepToString(Environment.NewLine);
@@ -442,7 +442,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Calculate the number of removals, inserts, and replacements needed to turn 'a' into 'b'.
+        /// Calculate the number of removals, inserts, and replacements needed to turn `a` into `b`.
         /// </summary>
         public static int CalculateLevenshteinDistance(string a, string b)
         {
@@ -487,7 +487,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Sorts 'list', maintaining the order of any elements with an identical comparison
+        /// Sorts `list`, maintaining the order of any elements with an identical comparison
         /// (unlike the standard <see cref="List{T}.Sort(Comparison{T})"/> method).
         /// </summary>
         public static void StableInsertionSort<T>(IList<T> list, Comparison<T> comparison)
@@ -507,7 +507,7 @@ namespace UltEvents
         }
 
         /// <summary>
-        /// Sorts 'list', maintaining the order of any elements with an identical comparison
+        /// Sorts `list`, maintaining the order of any elements with an identical comparison
         /// (unlike the standard <see cref="List{T}.Sort()"/> method).
         /// </summary>
         public static void StableInsertionSort<T>(IList<T> list) where T : IComparable<T>

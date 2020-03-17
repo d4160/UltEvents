@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 namespace UltEvents
 {
@@ -7,9 +7,7 @@ namespace UltEvents
     {
         public const string
             Namespace = "UltEvents",
-            PersistentArgumentType = "PersistentArgumentType",
-            SerializedPropertyArrayAccessor = "SerializedPropertyArrayAccessor",
-            SerializedPropertyFixedBufferSize = "SerializedProperty.fixedBufferSize";
+            PersistentArgumentType = "PersistentArgumentType";
 
         /// <summary>[Editor-Only] The names of various members in <see cref="UltEvents.PersistentArgument"/>.</summary>
         internal static class PersistentArgument

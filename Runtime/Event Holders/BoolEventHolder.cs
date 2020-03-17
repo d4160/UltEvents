@@ -29,8 +29,7 @@
 
         public virtual void Invoke(bool value)
         {
-            if (_boolEvent != null)
-                _boolEvent.Invoke(value);
+            BoolEvent.Invoke(value);
         }
     }
 }

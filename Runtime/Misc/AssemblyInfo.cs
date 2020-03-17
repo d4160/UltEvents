@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 // Assembly Definition files were introduced in Unity 2017.3.
 #if UNITY_2017_3_OR_NEWER
@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("An serializable event system for Unity with superior features to the inbuilt UnityEvents.")]
 [assembly: AssemblyCompany("Kybernetik")]
 [assembly: AssemblyProduct("UltEvents")]
-[assembly: AssemblyCopyright("Copyright © Kybernetik 2019")]
+[assembly: AssemblyCopyright("Copyright © Kybernetik 2020")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion("1.0.0.0")]
 
@@ -35,8 +35,14 @@ using System.Runtime.InteropServices;
     Justification = "Inline variable declarations are not supported by older Unity versions.")]
 [assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter",
     Justification = "Unity messages sometimes need specific signatures, even if you don't use all the parameters.")]
+[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement",
+    Justification = "Not supported by older Unity versions.")]
+[assembly: SuppressMessage("Style", "IDE0066:Convert switch statement to expression",
+    Justification = "Not supported by older Unity versions.")]
 [assembly: SuppressMessage("Style", "IDE1005:Delegate invocation can be simplified.",
     Justification = "Not supported by older Unity versions.")]
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles",
+    Justification = "Don't give code style advice in publically released code.")]
 
 // This suppression doesn't seem to actually work so we need to put #pragma warning disable in every file :(
 //[assembly: SuppressMessage("Code Quality", "CS0649:Field is never assigned to, and will always have its default value",

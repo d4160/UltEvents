@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -19,7 +19,7 @@ namespace UltEvents
 
         /// <summary>
         /// Get a cached array of the specified size for temporary use. The array must be used and discarded
-        /// immediately as it may be reused by anything else that calls this method with the same 'length'.
+        /// immediately as it may be reused by anything else that calls this method with the same `length`.
         /// </summary>
         public static T[] GetTempArray(int length)
         {

@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 using System;
 using System.Reflection;
@@ -120,19 +120,19 @@ namespace UltEvents
         /// <summary>Constructs a new <see cref="PersistentCall"/> with default values.</summary>
         public PersistentCall() { }
 
-        /// <summary>Constructs a new <see cref="PersistentCall"/> to serialize the specified 'method'.</summary>
+        /// <summary>Constructs a new <see cref="PersistentCall"/> to serialize the specified `method`.</summary>
         public PersistentCall(MethodInfo method, Object target)
         {
             SetMethod(method, target);
         }
 
-        /// <summary>Constructs a new <see cref="PersistentCall"/> to serialize the specified 'method'.</summary>
+        /// <summary>Constructs a new <see cref="PersistentCall"/> to serialize the specified `method`.</summary>
         public PersistentCall(Delegate method)
         {
             SetMethod(method);
         }
 
-        /// <summary>Constructs a new <see cref="PersistentCall"/> to serialize the specified 'method'.</summary>
+        /// <summary>Constructs a new <see cref="PersistentCall"/> to serialize the specified `method`.</summary>
         public PersistentCall(Action method)
         {
             SetMethod(method);
@@ -310,6 +310,16 @@ namespace UltEvents
 
         internal void GetMethodDetails(out Type declaringType, out string methodName)
         {
+#if UNITY_EDITOR
+            // If you think this looks retarded, that's because it is.
+
+            // Sometimes Unity ends up with an old reference to an object where the reference thinks it has been
+            // destroyed even though it hasn't and it still has a value Instance ID. So we just get a new reference.
+
+            if (_Target == null && !ReferenceEquals(_Target, null))
+                _Target = UnityEditor.EditorUtility.InstanceIDToObject(_Target.GetInstanceID());
+#endif
+
             GetMethodDetails(_MethodName, _Target, out declaringType, out methodName);
         }
 
@@ -347,7 +357,7 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns true if the specified 'type' can be represented by a non-linked <see cref="PersistentArgument"/>.
+        /// Returns true if the specified `type` can be represented by a non-linked <see cref="PersistentArgument"/>.
         /// </summary>
         public static bool IsSupportedNative(Type type)
         {
@@ -368,7 +378,7 @@ namespace UltEvents
         }
 
         /// <summary>
-        /// Returns true if the type of each of the 'parameters' can be represented by a non-linked <see cref="PersistentArgument"/>.
+        /// Returns true if the type of each of the `parameters` can be represented by a non-linked <see cref="PersistentArgument"/>.
         /// </summary>
         public static bool IsSupportedNative(ParameterInfo[] parameters)
         {
@@ -383,7 +393,7 @@ namespace UltEvents
 
         /************************************************************************************************************************/
 
-        /// <summary>Copies the contents of the 'target' call to this call.</summary>
+        /// <summary>Copies the contents of the `target` call to this call.</summary>
         public void CopyFrom(PersistentCall target)
         {
             _Target = target._Target;

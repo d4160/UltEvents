@@ -1,11 +1,10 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 #if UNITY_EDITOR
 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -21,7 +20,6 @@ namespace UltEvents.Editor
         public const float
             RowHeight = 16,
             Padding = 2,
-            GetSetWidth = 30,
             SuggestionButtonWidth = 16;
 
         public static readonly GUIStyle
@@ -402,6 +400,31 @@ namespace UltEvents.Editor
 
         /************************************************************************************************************************/
 
+        private static float _GetSetWidth;
+
+        private static float GetSetWidth
+        {
+            get
+            {
+                if (_GetSetWidth <= 0)
+                {
+                    float _, width;
+                    ArgumentLabel.text = "Get";
+                    GUI.skin.button.CalcMinMaxWidth(ArgumentLabel, out _, out width);
+
+                    ArgumentLabel.text = "Set";
+                    GUI.skin.button.CalcMinMaxWidth(ArgumentLabel, out _, out _GetSetWidth);
+
+                    if (_GetSetWidth < width)
+                        _GetSetWidth = width;
+                }
+
+                return _GetSetWidth;
+            }
+        }
+
+        /************************************************************************************************************************/
+
         private static void DoGetSetToggleGUI(ref Rect area, MethodBase method)
         {
             // Check if the method name starts with "get_" or "set_".
@@ -414,40 +437,38 @@ namespace UltEvents.Editor
             var first = name[0];
             var isGet = first == 'g';
             var isSet = first == 's';
-            if (isGet || isSet)
+            if (!isGet && !isSet)
+                return;
+
+            var methodName = (isGet ? "set_" : "get_") + name.Substring(4, name.Length - 4);
+            var oppositePropertyMethod = method.DeclaringType.GetMethod(methodName, UltEventUtils.AnyAccessBindings);
+            if (oppositePropertyMethod == null ||
+                (isGet && !MethodSelectionMenu.IsSupported(method.GetReturnType())))
+                return;
+
+            area.width -= GetSetWidth + Padding;
+
+            var buttonArea = new Rect(
+                area.x + area.width + Padding,
+                area.y,
+                GetSetWidth,
+                area.height);
+
+            if (GUI.Button(buttonArea, isGet ? "Get" : "Set"))
             {
-                var methodName = (isGet ? "set_" : "get_") + name.Substring(4, name.Length - 4);
-                var oppositePropertyMethod = method.DeclaringType.GetMethod(methodName, UltEventUtils.AnyAccessBindings);
-                if (oppositePropertyMethod != null)
+                var cachedState = new DrawerState();
+                cachedState.CopyFrom(DrawerState.Current);
+
+                EditorApplication.delayCall += () =>
                 {
-                    if (isGet && !MethodSelectionMenu.IsSupported(method.GetReturnType()))
-                        return;
+                    DrawerState.Current.CopyFrom(cachedState);
 
-                    area.width -= GetSetWidth + Padding;
+                    SetMethod(oppositePropertyMethod);
 
-                    var buttonArea = new Rect(
-                        area.x + area.width + Padding,
-                        area.y,
-                        GetSetWidth,
-                        area.height);
+                    DrawerState.Current.Clear();
 
-                    if (GUI.Button(buttonArea, isGet ? "Set" : "Get"))
-                    {
-                        var cachedState = new DrawerState();
-                        cachedState.CopyFrom(DrawerState.Current);
-
-                        EditorApplication.delayCall += () =>
-                        {
-                            DrawerState.Current.CopyFrom(cachedState);
-
-                            SetMethod(oppositePropertyMethod);
-
-                            DrawerState.Current.Clear();
-
-                            InternalEditorUtility.RepaintAllViews();
-                        };
-                    }
-                }
+                    InternalEditorUtility.RepaintAllViews();
+                };
             }
         }
 
@@ -533,12 +554,11 @@ namespace UltEvents.Editor
 
         public static void SetMethod(MethodInfo methodInfo)
         {
-            SerializedPropertyAccessor.ModifyValues<PersistentCall>(DrawerState.Current.CallProperty,
-                (call) =>
-                {
-                    if (call != null)
-                        call.SetMethod(methodInfo, DrawerState.Current.TargetProperty.objectReferenceValue);
-                }, "Set Method");
+            DrawerState.Current.CallProperty.ModifyValues<PersistentCall>((call) =>
+            {
+                if (call != null)
+                    call.SetMethod(methodInfo, DrawerState.Current.TargetProperty.objectReferenceValue);
+            }, "Set Method");
         }
 
         /************************************************************************************************************************/

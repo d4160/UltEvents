@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -118,7 +118,7 @@ namespace UltEvents
         /// <summary>Constructs a new <see cref="PersistentArgument"/> with default values.</summary>
         public PersistentArgument() { }
 
-        /// <summary>Constructs a new <see cref="PersistentArgument"/> with the specified 'type'.</summary>
+        /// <summary>Constructs a new <see cref="PersistentArgument"/> with the specified `type`.</summary>
         public PersistentArgument(Type type)
         {
             _Type = GetArgumentType(type, out _String, out _Int);
@@ -589,7 +589,7 @@ namespace UltEvents
         /// <summary>
         /// Returns the <see cref="System.Type"/> associated with the specified <see cref="PersistentArgumentType"/>.
         /// <para></para>
-        /// If the 'type' can be inherited (such as an Enum or Object), the 'assemblyQualifiedName' will be used to get the type.
+        /// If the `type` can be inherited (such as an Enum or Object), the `assemblyQualifiedName` will be used to get the type.
         /// </summary>
         public static Type GetArgumentType(PersistentArgumentType type, float secondaryType, string assemblyQualifiedName)
         {
@@ -630,7 +630,7 @@ namespace UltEvents
         /// <summary>
         /// Returns the <see cref="PersistentArgumentType"/> associated with the specified <see cref="System.Type"/>.
         /// <para></para>
-        /// If the 'type' can be inherited (such as an Enum or Object), the 'assemblyQualifiedName' will be assigned as well (otherwise null).
+        /// If the `type` can be inherited (such as an Enum or Object), the `assemblyQualifiedName` will be assigned as well (otherwise null).
         /// </summary>
         public static PersistentArgumentType GetArgumentType(Type type, out string assemblyQualifiedName, out int linkIndex)
         {

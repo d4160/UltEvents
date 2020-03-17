@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -42,7 +42,7 @@ namespace UltEvents.Editor
         #region Entry Point
         /************************************************************************************************************************/
 
-        /// <summary>Opens the menu near the specified 'area'.</summary>
+        /// <summary>Opens the menu near the specified `area`.</summary>
         public static void ShowMenu(Rect area)
         {
             CachedState.CopyFrom(DrawerState.Current);
@@ -627,7 +627,7 @@ namespace UltEvents.Editor
                     DrawerState.Current.CopyFrom(CachedState);
 
                     var i = 0;
-                    SerializedPropertyAccessor.ModifyValues<PersistentCall>(CachedState.CallProperty, (call) =>
+                    CachedState.CallProperty.ModifyValues<PersistentCall>((call) =>
                     {
                         var target = targets != null ? targets[i % targets.Length] : null;
                         call.SetMethod(method, target);
@@ -849,7 +849,7 @@ namespace UltEvents.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns true if the specified 'type' can be represented by a <see cref="PersistentArgument"/>.
+        /// Returns true if the specified `type` can be represented by a <see cref="PersistentArgument"/>.
         /// </summary>
         public static bool IsSupported(Type type)
         {
@@ -866,7 +866,7 @@ namespace UltEvents.Editor
         }
 
         /// <summary>
-        /// Returns true if the type of each of the 'parameters' can be represented by a <see cref="PersistentArgument"/>.
+        /// Returns true if the type of each of the `parameters` can be represented by a <see cref="PersistentArgument"/>.
         /// </summary>
         public static bool IsSupported(ParameterInfo[] parameters)
         {

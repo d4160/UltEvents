@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 using System;
 using System.Collections.Generic;
@@ -36,6 +36,10 @@ namespace UltEvents
     {
         /************************************************************************************************************************/
         #region Fields and Properties
+        /************************************************************************************************************************/
+
+        public abstract int ParameterCount { get; }
+
         /************************************************************************************************************************/
 
         [SerializeField]
@@ -104,7 +108,7 @@ namespace UltEvents
         #region Operators and Call Registration
         /************************************************************************************************************************/
 
-        /// <summary>Ensures that 'e' isn't null and adds 'method' to its <see cref="PersistentCallsList"/>.</summary>
+        /// <summary>Ensures that `e` isn't null and adds `method` to its <see cref="PersistentCallsList"/>.</summary>
         public static PersistentCall AddPersistentCall<T>(ref T e, Delegate method) where T : UltEventBase, new()
         {
             if (e == null)
@@ -113,7 +117,7 @@ namespace UltEvents
             return e.AddPersistentCall(method);
         }
 
-        /// <summary>Ensures that 'e' isn't null and adds 'method' to its <see cref="PersistentCallsList"/>.</summary>
+        /// <summary>Ensures that `e` isn't null and adds `method` to its <see cref="PersistentCallsList"/>.</summary>
         public static PersistentCall AddPersistentCall<T>(ref T e, Action method) where T : UltEventBase, new()
         {
             if (e == null)
@@ -124,14 +128,14 @@ namespace UltEvents
 
         /************************************************************************************************************************/
 
-        /// <summary>If 'e' isn't null, this method removes 'method' from its <see cref="PersistentCallsList"/>.</summary>
+        /// <summary>If `e` isn't null, this method removes `method` from its <see cref="PersistentCallsList"/>.</summary>
         public static void RemovePersistentCall(ref UltEventBase e, Delegate method)
         {
             if (e != null)
                 e.RemovePersistentCall(method);
         }
 
-        /// <summary>If 'e' isn't null, this method removes 'method' from its <see cref="PersistentCallsList"/>.</summary>
+        /// <summary>If `e` isn't null, this method removes `method` from its <see cref="PersistentCallsList"/>.</summary>
         public static void RemovePersistentCall(ref UltEventBase e, Action method)
         {
             if (e != null)
@@ -176,7 +180,26 @@ namespace UltEvents
         #endregion
         /************************************************************************************************************************/
 
-        /// <summary>Invokes all <see cref="PersistentCallsList"/> registered to this event.</summary>
+        /// <summary>
+        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/>.
+        /// </summary>
+        public void DynamicInvoke(params object[] parameters)
+        {
+            // A larger array would actually work fine, but it probably still means something is wrong.
+            if (parameters.Length != ParameterCount)
+                throw new ArgumentException("Invalid parameter count " +
+                     parameters.Length + " should be " + ParameterCount);
+
+            CacheParameters(parameters);
+            InvokePersistentCalls();
+            var dynamicCalls = DynamicCallsBase;
+            if (dynamicCalls != null)
+                dynamicCalls.DynamicInvoke(parameters);
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Invokes all <see cref="PersistentCall"/>s registered to this event.</summary>
         protected void InvokePersistentCalls()
         {
             var originalParameterOffset = _ParameterOffset;
@@ -219,11 +242,22 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Sets the number of parameters passed to this event.
+        /// Stores the `parameter` so it can be accessed by <see cref="PersistentCall"/>s.
         /// </summary>
-        protected static void CacheParameter(object value)
+        protected static void CacheParameter(object parameter)
         {
-            LinkedValueCache.Add(value);
+            LinkedValueCache.Add(parameter);
+            _ReturnValueOffset = LinkedValueCache.Count;
+        }
+
+        /// <summary>
+        /// Stores the `parameters` so they can be accessed by <see cref="PersistentCall"/>s.
+        /// </summary>
+        protected static void CacheParameters(object[] parameters)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+                LinkedValueCache.Add(parameters[i]);
+
             _ReturnValueOffset = LinkedValueCache.Count;
         }
 
@@ -369,7 +403,7 @@ namespace UltEvents
 
         /************************************************************************************************************************/
 
-        /// <summary>Copies the contents of this the 'target' event to this event.</summary>
+        /// <summary>Copies the contents of this the `target` event to this event.</summary>
         public virtual void CopyFrom(UltEventBase target)
         {
             if (target._PersistentCalls == null)

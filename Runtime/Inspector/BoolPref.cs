@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -11,13 +11,15 @@ namespace UltEvents.Editor
     /// <summary>[Editor-Only]
     /// A simple wrapper around <see cref="EditorPrefs"/> to get and set a bool.
     /// <para></para>
-    /// If you are interested in a more comprehensive pref wrapper that supports more types, check out
-    /// <see href="https://assetstore.unity.com/packages/tools/gui/inspector-gadgets-lite-82896">
-    /// Inspector Gadgets</see>.
+    /// If you are interested in a more comprehensive pref wrapper that supports more types, you should check out
+    /// <see href="https://kybernetik.com.au/inspector-gadgets">Inspector Gadgets</see>.
     /// </summary>
     public sealed class BoolPref
     {
         /************************************************************************************************************************/
+
+        /// <summary>The text that will be displayed for this item in a context menu.</summary>
+        public readonly string Label;
 
         /// <summary>The identifier with which this pref will be saved.</summary>
         public readonly string Key;
@@ -54,7 +56,7 @@ namespace UltEvents.Editor
             }
         }
 
-        /// <summary>Returns the current value of the 'pref'.</summary>
+        /// <summary>Returns the current value of the `pref`.</summary>
         public static implicit operator bool(BoolPref pref)
         {
             return pref.Value;
@@ -65,6 +67,7 @@ namespace UltEvents.Editor
         /// <summary>Constructs a new <see cref="BoolPref"/>.</summary>
         public BoolPref(string label, bool defaultValue, Action onChanged = null)
         {
+            Label = label;
             Key = Names.Namespace + "." + label;
             DefaultValue = defaultValue;
             OnChanged = onChanged;
@@ -76,7 +79,7 @@ namespace UltEvents.Editor
         /// <summary>Adds a menu item to toggle this pref.</summary>
         public void AddToMenu(GenericMenu menu)
         {
-            menu.AddItem(new GUIContent("Display Options ->/" + Key), _Value, () =>
+            menu.AddItem(new GUIContent("Display Options ->/" + Label), _Value, () =>
             {
                 _Value = !_Value;
                 EditorPrefs.SetBool(Key, _Value);
@@ -89,6 +92,7 @@ namespace UltEvents.Editor
 
         /// <summary>Various settings.</summary>
         public static readonly BoolPref
+            UseIndentation = new BoolPref("Use Indentation", true),
             AutoOpenMenu = new BoolPref("Auto Open Menu", true),
             AutoHideFooter = new BoolPref("Auto Hide Footer", true),
             ShowNonPublicMethods = new BoolPref("Show Non-Public Methods", true),
@@ -105,6 +109,7 @@ namespace UltEvents.Editor
         /// <summary>Adds menu items to toggle all prefs.</summary>
         public static void AddDisplayOptions(GenericMenu menu)
         {
+            UseIndentation.AddToMenu(menu);
             AutoOpenMenu.AddToMenu(menu);
             AutoHideFooter.AddToMenu(menu);
             ShowNonPublicMethods.AddToMenu(menu);

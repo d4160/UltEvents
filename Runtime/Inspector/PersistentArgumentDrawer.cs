@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -138,7 +138,7 @@ namespace UltEvents.Editor
 
         private static void DoEnumGUI(Rect area, SerializedProperty argumentProperty, GUIContent label)
         {
-            var enumType = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType;
+            var enumType = argumentProperty.GetValue<PersistentArgument>().SystemType;
             if (enumType == null)
             {
                 DoErrorMessageGUI(area, argumentProperty, label, "Error: enum type not set");
@@ -437,7 +437,7 @@ namespace UltEvents.Editor
             label = EditorGUI.BeginProperty(area, label, o);
             EditorGUI.BeginChangeCheck();
 
-            var type = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty).SystemType ?? typeof(UnityEngine.Object);
+            var type = argumentProperty.GetValue<PersistentArgument>().SystemType ?? typeof(UnityEngine.Object);
 
             var value = EditorGUI.ObjectField(area, label, o.objectReferenceValue, type, true);
 
@@ -460,7 +460,7 @@ namespace UltEvents.Editor
 
             area.xMin += EditorGUIUtility.labelWidth;
 
-            var argument = SerializedPropertyAccessor.GetValue<PersistentArgument>(argumentProperty);
+            var argument = argumentProperty.GetValue<PersistentArgument>();
             var callIndex = argument._Int;
             var argumentType = argument.SystemType;
 
@@ -612,7 +612,11 @@ namespace UltEvents.Editor
             {
                 _LinkToggleStyle = new GUIStyle(EditorStyles.miniButton)
                 {
+#if UNITY_2019_3_OR_NEWER
+                    padding = new RectOffset(0, -1, 0, 1),
+#else
                     padding = new RectOffset(0, 0, 0, 1),
+#endif
                     fontSize = 12,
                 };
             }
@@ -628,7 +632,7 @@ namespace UltEvents.Editor
 
             if (wasLink != GUI.Toggle(area, wasLink, _LinkToggleContent, _LinkToggleStyle))
             {
-                SerializedPropertyAccessor.ModifyValues<PersistentArgument>(argumentProperty, (argument) =>
+                argumentProperty.ModifyValues<PersistentArgument>((argument) =>
                 {
                     if (wasLink)
                     {

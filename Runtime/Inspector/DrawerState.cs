@@ -1,13 +1,11 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 #if UNITY_EDITOR
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
 
 namespace UltEvents.Editor
 {
@@ -76,14 +74,18 @@ namespace UltEvents.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>Caches the event from the specified property.</summary>
-        public void BeginEvent(SerializedProperty eventProperty)
+        /// <summary>Caches the event from the specified property and returns true as long as it is not null.</summary>
+        public bool TryBeginEvent(SerializedProperty eventProperty)
         {
+            Event = eventProperty.GetValue<UltEventBase>();
+            if (Event == null)
+                return false;
+
             EventProperty = eventProperty;
-            Event = SerializedPropertyAccessor.GetValue<UltEventBase>(eventProperty);
+            return true;
         }
 
-        /// <summary>Cancels out a call to <see cref="BeginEvent"/>.</summary>
+        /// <summary>Cancels out a call to <see cref="TryBeginEvent"/>.</summary>
         public void EndEvent()
         {
             EventProperty = null;
@@ -152,7 +154,7 @@ namespace UltEvents.Editor
         /// <summary>Returns the call encapsulated by the specified property.</summary>
         public static PersistentCall GetCall(SerializedProperty callProperty)
         {
-            return SerializedPropertyAccessor.GetValue<PersistentCall>(callProperty);
+            return callProperty.GetValue<PersistentCall>();
         }
 
         /************************************************************************************************************************/
@@ -215,7 +217,7 @@ namespace UltEvents.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>Returns the index of the persistent call that targets the specified 'method' or -1 if there is none.</summary>
+        /// <summary>Returns the index of the persistent call that targets the specified `method` or -1 if there is none.</summary>
         public int IndexOfMethod(MethodBase method)
         {
             for (int i = 0; i < Event._PersistentCalls.Count; i++)
@@ -232,7 +234,7 @@ namespace UltEvents.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>Returns the method cached from the persistent call at the specified 'index'.</summary>
+        /// <summary>Returns the method cached from the persistent call at the specified `index`.</summary>
         public MethodBase GetLinkedMethod(int index)
         {
             if (index >= 0 && index < PersistentMethodCache.Count)
@@ -247,7 +249,7 @@ namespace UltEvents.Editor
         #region Previous Call Cache
         /************************************************************************************************************************/
 
-        /// <summary>Tries to get the details of the a parameter or return value of the specified 'type'.</summary>
+        /// <summary>Tries to get the details of the a parameter or return value of the specified `type`.</summary>
         public bool TryGetLinkable(Type type, out int linkIndex, out PersistentArgumentType linkType)
         {
             if (Event != null)
@@ -325,7 +327,7 @@ namespace UltEvents.Editor
         #endregion
         /************************************************************************************************************************/
 
-        /// <summary>Copies the contents of the 'other' state to overwrite this one.</summary>
+        /// <summary>Copies the contents of the `other` state to overwrite this one.</summary>
         public void CopyFrom(DrawerState other)
         {
             EventProperty = other.EventProperty;

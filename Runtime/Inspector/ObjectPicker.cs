@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 // Copied from Kybernetik.Core.
 
 #if UNITY_EDITOR
@@ -7,7 +7,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -140,7 +139,7 @@ namespace UltEvents.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Removes any duplicates of the first few elements in 'options' (from 0 to 'suggestions') from anywhere later
+        /// Removes any duplicates of the first few elements in `options` (from 0 to `suggestions`) from anywhere later
         /// in the list.
         /// </summary>
         public static void RemoveDuplicateSuggestions<T>(List<T> options, int suggestions) where T : class

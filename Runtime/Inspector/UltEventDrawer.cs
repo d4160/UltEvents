@@ -1,11 +1,9 @@
-﻿// UltEvents // Copyright 2019 Kybernetik //
+﻿// UltEvents // Copyright 2020 Kybernetik //
 
 #if UNITY_EDITOR
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -52,7 +50,9 @@ namespace UltEvents.Editor
             }
             else
             {
-                DrawerState.Current.BeginEvent(property);
+                if (!DrawerState.Current.TryBeginEvent(property))
+                    return EditorGUIUtility.singleLineHeight;
+
                 CachePersistentCallList(property);
                 DrawerState.Current.EndEvent();
 
@@ -81,12 +81,14 @@ namespace UltEvents.Editor
 
         public override void OnGUI(Rect area, SerializedProperty property, GUIContent label)
         {
-            DrawerState.Current.BeginEvent(property);
+            if (!DrawerState.Current.TryBeginEvent(property))
+                return;
 
             EventLabel.text = label.text + DrawerState.Current.Event.ParameterString;
             EventLabel.tooltip = label.tooltip;
 
-            area = EditorGUI.IndentedRect(area);
+            if (BoolPref.UseIndentation)
+                area = EditorGUI.IndentedRect(area);
             area.y -= 1;
 
             var indentLevel = EditorGUI.indentLevel;
@@ -194,7 +196,7 @@ namespace UltEvents.Editor
             var labelStyle = DrawerState.Current.EventProperty.prefabOverride ? EditorStyles.boldLabel : GUI.skin.label;
 
             CountLabel.text = _CurrentCallCount.ToString();
-            var countLabelWidth = EditorStyles.boldLabel.CalcSize(CountLabel).x;
+            var countLabelWidth = labelStyle.CalcSize(CountLabel).x;
 
             area.width -= AddButtonWidth + AddButtonPadding + countLabelWidth;
             GUI.Label(area, EventLabel, labelStyle);
@@ -205,7 +207,11 @@ namespace UltEvents.Editor
 
             area.x += area.width + AddButtonPadding + 1;
             area.width = AddButtonWidth;
+#if UNITY_2019_3_OR_NEWER
+            area.y += 1;
+#else
             area.y -= 1;
+#endif
 
             if (GUI.Button(area, PlusLabel, PlusButton))
             {
@@ -248,8 +254,8 @@ namespace UltEvents.Editor
         {
             EditorGUI.BeginProperty(area, GUIContent.none, DrawerState.Current.EventProperty);
 
-            if (Event.current.button == 0 &&
-                GUI.Button(area, "Click to add a listener", GUI.skin.label))
+            if (GUI.Button(area, "Click to add a listener", GUI.skin.label) &&
+                Event.current.button == 0)
             {
                 AddNewCall(_CurrentCallList);
             }
