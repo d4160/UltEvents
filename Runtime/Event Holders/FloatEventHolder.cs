@@ -1,5 +1,4 @@
-﻿using d4160.Core;
-using UltEvents;
+﻿using UltEvents;
 using UnityEngine;
 
 namespace d4160.Events
@@ -10,7 +9,7 @@ namespace d4160.Events
 
         public virtual void Invoke(int index, float value)
         {
-            if (_actions.IsValidIndex(index))
+            if (index >= 0 && index < _actions.Length)
             {
                 switch (_actions[index].modType)
                 {
