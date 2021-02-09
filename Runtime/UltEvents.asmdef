@@ -1,8 +1,6 @@
 {
     "name": "UltEvents",
-    "references": [
-        "GUID:abd02ea2a3d741f48b1c16eb7025fec5"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

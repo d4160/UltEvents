@@ -1,7 +1,7 @@
 {
   "name": "com.kybernetik.ult-events",
   "displayName": "UltEvents",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "unity": "2017.1",
   "description": "UltEvents allows you to easily setup and configure persistent event callbacks via the Inspector. It serves the same purpose as the inbuilt UnityEvents, but has superior features with fewer restrictions and an improved Inspector interface which requires fewer clicks to perform individual tasks.",
   "keywords": [
