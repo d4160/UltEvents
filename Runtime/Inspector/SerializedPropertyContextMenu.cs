@@ -1,4 +1,4 @@
-// UltEvents // Copyright 2020 Kybernetik //
+// UltEvents // Copyright 2021 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -25,12 +25,13 @@ namespace UltEvents.Editor
                 if (accessor == null)
                     return;
 
-                if (typeof(UltEventBase).IsAssignableFrom(accessor.FieldType))
+                var type = accessor.GetFieldElementType(property);
+                if (typeof(UltEventBase).IsAssignableFrom(type))
                 {
                     AddEventFunctions(menu, property, accessor);
                     BoolPref.AddDisplayOptions(menu);
                 }
-                else if (accessor.FieldType == typeof(PersistentCall))
+                else if (type == typeof(PersistentCall))
                 {
                     AddCallClipboardItems(menu, property, accessor);
                     BoolPref.AddDisplayOptions(menu);
@@ -45,7 +46,8 @@ namespace UltEvents.Editor
         {
             property = property.Copy();
 
-            if (accessor.FieldType == typeof(UltEvent))
+            var type = accessor.GetFieldElementType(property);
+            if (type == typeof(UltEvent))
             {
                 menu.AddItem(new GUIContent("Invoke Event"), false, () =>
                 {

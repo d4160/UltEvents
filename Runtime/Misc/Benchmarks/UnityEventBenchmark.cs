@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2020 Kybernetik //
+﻿// UltEvents // Copyright 2021 Kybernetik //
 
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
 

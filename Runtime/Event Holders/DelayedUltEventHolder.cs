@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2020 Kybernetik //
+﻿// UltEvents // Copyright 2021 Kybernetik //
 
 using System.Collections;
 using UnityEngine;
@@ -18,7 +18,6 @@ namespace UltEvents
         private float _Delay;
 
         private WaitForSeconds _Wait;
-        private Coroutine _storedRoutine;
 
         /// <summary>
         /// The number of seconds that will pass between calling <see cref="Invoke"/> and the event actually being invoked.
@@ -38,18 +37,10 @@ namespace UltEvents
         /// <summary>Waits for <see cref="Delay"/> seconds then calls Event.Invoke().</summary>
         public override void Invoke()
         {
-            if (_Delay <= 0)
+            if (_Delay < 0)
                 base.Invoke();
             else
-                _storedRoutine = StartCoroutine(DelayedInvoke());
-        }
-
-        public new void CancelInvoke()
-        {
-            if (_storedRoutine != null)
-            {
-                StopCoroutine(_storedRoutine);
-            }
+                StartCoroutine(DelayedInvoke());
         }
 
         /************************************************************************************************************************/
@@ -62,8 +53,6 @@ namespace UltEvents
             yield return _Wait;
 
             base.Invoke();
-
-            _storedRoutine = null;
         }
 
         /************************************************************************************************************************/

@@ -1,7 +1,4 @@
-﻿// UltEvents // Copyright 2020 Kybernetik //
-
-// Assembly Definition files were introduced in Unity 2017.3.
-#if UNITY_2017_3_OR_NEWER
+﻿// UltEvents // Copyright 2021 Kybernetik //
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -11,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("An serializable event system for Unity with superior features to the inbuilt UnityEvents.")]
 [assembly: AssemblyCompany("Kybernetik")]
 [assembly: AssemblyProduct("UltEvents")]
-[assembly: AssemblyCopyright("Copyright © Kybernetik 2020")]
+[assembly: AssemblyCopyright("Copyright © Kybernetik 2021")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyVersion("1.0.0.0")]
 
@@ -47,5 +44,3 @@ using System.Runtime.InteropServices;
 // This suppression doesn't seem to actually work so we need to put #pragma warning disable in every file :(
 //[assembly: SuppressMessage("Code Quality", "CS0649:Field is never assigned to, and will always have its default value",
 //    Justification = "Using the [SerializeField] attribute on a private field means Unity will set it from serialized data.")]
-
-#endif

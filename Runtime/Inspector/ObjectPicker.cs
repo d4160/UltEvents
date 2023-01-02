@@ -1,4 +1,4 @@
-﻿// UltEvents // Copyright 2020 Kybernetik //
+﻿// UltEvents // Copyright 2021 Kybernetik //
 // Copied from Kybernetik.Core.
 
 #if UNITY_EDITOR
