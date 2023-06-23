@@ -690,9 +690,9 @@ namespace UltEvents.Editor
 
             static InternalGUI()
             {
-                SearchBarStyle = GUI.skin.FindStyle("ToolbarSeachTextField");
-                SearchBarEndStyle = GUI.skin.FindStyle("ToolbarSeachCancelButtonEmpty");
-                SearchBarCancelStyle = GUI.skin.FindStyle("ToolbarSeachCancelButton");
+                SearchBarStyle = GUI.skin.FindStyle("ToolbarSearchTextField");
+                SearchBarEndStyle = GUI.skin.FindStyle("ToolbarSearchCancelButtonEmpty");
+                SearchBarCancelStyle = GUI.skin.FindStyle("ToolbarSearchCancelButton");
 
                 HeaddingStyle = new GUIStyle(EditorStyles.boldLabel)
                 {
